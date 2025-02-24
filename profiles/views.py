@@ -1,20 +1,47 @@
 from django.shortcuts import render
 from profiles.models import Profile
 
+"""
+    This Module defines the views for the 'profiles' application.
 
-# Sed placerat quam in pulvinar commodo. Nullam laoreet consectetur ex, sed consequat libero pulvinar eget. Fusc
-# faucibus, urna quis auctor pharetra, massa dolor cursus neque, quis dictum lacus d
+    These views fetch data from the database and render it in the respective templates.
+"""
+
+
 def index(request):
+    """
+        View for the index page that displays every profiles.
+
+        This view retrieves all profiles from the database and displays them on the index page.
+        The profiles are passed to the template.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing data about the request.
+
+        Returns:
+            HttpResponse: A response object that renders the 'index.html' template with the list
+                of profiles.
+    """
     profiles_list = Profile.objects.all()
     context = {'profiles_list': profiles_list}
     return render(request, 'profiles/templates/index.html', context)
 
 
-# Aliquam sed metus eget nisi tincidunt ornare accumsan eget lac
-# laoreet neque quis, pellentesque dui. Nullam facilisis pharetra vulputate. Sed tincidunt, dolor id facilisis
-# fringilla, eros leo tristique lacus,
-# it. Nam aliquam dignissim congue. Pellentesque habitant morbi tristique senectus et netus et males
 def profile(request, username):
+    """
+        View for displaying details of a specific profile.
+
+        This view retrieves a specific profile from the database based on its username.
+        The profile is passed to the template.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing data about the request.
+            username (str): The username of the profile.
+
+        Returns:
+            HttpResponse: A response object that renders the 'profile.html' template with the
+                details of the requested profile.
+    """
     profile = Profile.objects.get(user__username=username)
     context = {'profile': profile}
     return render(request, 'profile.html', context)

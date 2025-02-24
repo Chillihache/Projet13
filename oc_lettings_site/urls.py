@@ -4,6 +4,17 @@ import lettings.urls
 import profiles.urls
 from oc_lettings_site.views import index
 
+"""
+    This module includes the URL patterns for the 'oc_lettings_site' application.
+
+    Routes:
+        index: The main landing page of the site.
+        admin: The Django administrator interface.
+        lettings: Includes the URL patterns for the 'lettings' application.
+        profiles: Includes the URL patterns for the 'profiles' application.
+"""
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
