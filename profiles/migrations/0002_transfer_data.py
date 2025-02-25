@@ -3,7 +3,12 @@ from django.forms.models import model_to_dict
 
 
 def transfer_data(apps, schema_editor):
-    OldProfile = apps.get_model('oc_lettings_site', 'Profile')
+    try:
+        OldProfile = apps.get_model('oc_lettings_site', 'Profile')
+
+    except LookupError:
+        return #for pytest creating a temporary database
+
     NewProfile = apps.get_model('profiles', 'Profile')
     User = apps.get_model('auth', 'User')
 

@@ -3,8 +3,12 @@ from django.forms.models import model_to_dict
 
 
 def transfer_data(apps, schema_editor):
-    OldAddress = apps.get_model('oc_lettings_site', 'Address')
-    OldLetting = apps.get_model('oc_lettings_site', 'Letting')
+    try:
+        OldAddress = apps.get_model('oc_lettings_site', 'Address')
+        OldLetting = apps.get_model('oc_lettings_site', 'Letting')
+    except LookupError:
+        return #for pytest creating a temporary database
+
     NewAddress = apps.get_model('lettings', 'Address')
     NewLetting = apps.get_model('lettings', 'Letting')
 
