@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 from profiles.models import Profile
 
 """
@@ -42,6 +43,9 @@ def profile(request, username):
             HttpResponse: A response object that renders the 'profile.html' template with the
                 details of the requested profile.
     """
-    profile = Profile.objects.get(user__username=username)
+    try:
+        profile = Profile.objects.get(user__username=username)
+    except Profile.DoesNotExist:
+        raise Http404("Profile not found")
     context = {'profile': profile}
     return render(request, 'profile.html', context)

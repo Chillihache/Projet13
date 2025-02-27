@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 from lettings.models import Letting
 """
     This Module defines the views for the 'lettings' application.
@@ -41,7 +42,10 @@ def letting(request, letting_id):
             HttpResponse: A response object that renders the 'letting.html' template with the
                 details of the requested letting.
         """
-    letting = Letting.objects.get(id=letting_id)
+    try:
+        letting = Letting.objects.get(id=letting_id)
+    except Letting.DoesNotExist:
+        raise Http404("Letting not found")
     context = {
         'title': letting.title,
         'address': letting.address,
