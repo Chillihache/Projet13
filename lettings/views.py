@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render
 from django.http import Http404
 from lettings.models import Letting
@@ -23,6 +24,10 @@ def index(request):
                 of lettings.
     """
     lettings_list = Letting.objects.all()
+
+    if not lettings_list:
+        logging.info("No lettings in database.")
+
     context = {'lettings_list': lettings_list}
     return render(request, 'lettings/templates/index.html', context)
 
@@ -45,7 +50,9 @@ def letting(request, letting_id):
     try:
         letting = Letting.objects.get(id=letting_id)
     except Letting.DoesNotExist:
+        logging.error(f"Letting with id {letting_id} not found")
         raise Http404("Letting not found")
+
     context = {
         'title': letting.title,
         'address': letting.address,

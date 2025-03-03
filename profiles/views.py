@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render
 from django.http import Http404
 from profiles.models import Profile
@@ -24,6 +25,10 @@ def index(request):
                 of profiles.
     """
     profiles_list = Profile.objects.all()
+
+    if not profiles_list:
+        logging.error("No profiles in database.")
+
     context = {'profiles_list': profiles_list}
     return render(request, 'profiles/templates/index.html', context)
 
@@ -46,6 +51,8 @@ def profile(request, username):
     try:
         profile = Profile.objects.get(user__username=username)
     except Profile.DoesNotExist:
+        logging.error(f"Profile with username {username} not found")
         raise Http404("Profile not found")
+
     context = {'profile': profile}
     return render(request, 'profile.html', context)

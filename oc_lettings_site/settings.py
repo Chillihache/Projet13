@@ -1,6 +1,10 @@
 import os
-
 from pathlib import Path
+import logging
+import sentry_sdk
+from sentry_sdk.integrations.logging import LoggingIntegration
+from decouple import config
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,10 +14,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s'
+SECRET_KEY = config("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']  # Add your domain in production
 
@@ -119,3 +123,20 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static",]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+logging.basicConfig(level=logging.INFO)
+
+sentry_sdk.init(
+    dsn=config("DNS_SENTRY"),
+    traces_sample_rate=1.0,
+    _experiments={
+        "continuous_profiling_auto_start": True,
+    },
+    integrations=[
+        LoggingIntegration(
+            level=logging.INFO,
+            event_level=logging.INFO
+        ),
+    ]
+)
