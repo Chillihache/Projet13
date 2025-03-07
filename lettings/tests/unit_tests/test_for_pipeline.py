@@ -1,3 +1,2 @@
-def test_for_pipeline:
+def test_for_pipeline():
     assert 1
-    
