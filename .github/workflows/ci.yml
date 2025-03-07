@@ -3,11 +3,11 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - main
+      - master
       - QA
   pull_request:
     branches:
-      - main
+      - master
       - QA
 
 jobs:
