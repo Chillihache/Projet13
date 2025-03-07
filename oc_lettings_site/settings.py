@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("DJANGO_SECRET_KEY")
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', config('DJANGO_SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -124,11 +124,12 @@ STATICFILES_DIRS = [BASE_DIR / "static",]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+DNS_SENTRY = os.getenv('DNS_SENTRY', config('DNS_SENTRY'))
 
 logging.basicConfig(level=logging.INFO)
 
 sentry_sdk.init(
-    dsn=config("DNS_SENTRY"),
+    dsn=DNS_SENTRY,
     traces_sample_rate=1.0,
     _experiments={
         "continuous_profiling_auto_start": True,
