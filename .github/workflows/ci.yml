@@ -45,10 +45,6 @@ jobs:
           pytest --cov-report=term-missing
           coverage report --fail-under=80
 
-      - name: Collect Django Static Files
-        run: |
-          python manage.py collectstatic --noinput
-
   containerize:
     name: Build and push Docker Image
     if: github.ref == 'refs/heads/master'
