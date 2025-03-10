@@ -54,6 +54,9 @@ jobs:
     if: github.ref == 'refs/heads/master'
     needs: test
     runs-on: ubuntu-latest
+    env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          DNS_SENTRY: ${{ secrets.DNS_SENTRY }}
 
     steps:
       - name: Checkout repo
