@@ -71,9 +71,10 @@ jobs:
       - name: Build Docker Image with secrets
         run: |
           docker build \
-            --build-arg DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }} \
-            --build-arg DNS_SENTRY=${{ secrets.DNS_SENTRY }} \
-            -t ${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings-site:${{ env.IMAGE_TAG }} .
+          --build-arg DJANGO_SECRET_KEY="${{ secrets.DJANGO_SECRET_KEY }}" \
+          --build-arg DNS_SENTRY="${{ secrets.DNS_SENTRY }}" \
+          -t ${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings-site:${{ env.IMAGE_TAG }} .
+
 
       - name: Push Docker Image to Docker Hub
         run: |
