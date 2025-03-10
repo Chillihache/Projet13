@@ -6,6 +6,8 @@ COPY . .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN python manage.py collectstatic --noinput
+
 ENV DATABASE_URL=sqlite:///oc-lettings-site.sqlite3
 
 EXPOSE 8000
