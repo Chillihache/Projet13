@@ -1,28 +1,38 @@
 import os
 import subprocess
 import sys
+from decouple import config
 
-IMAGE_NAME = "chillihache/oc-lettings-site:latest"
+"""
+    Allows retrieving the latest version of the image from Docker Hub and starting a container
+"""
+
+IMAGE_NAME = config('IMAGE_NAME')
 
 
 def check_env_file():
-    """Vérifie si le fichier .env existe, sinon affiche une erreur."""
+    """
+        Check if the .env file exists, otherwise display an error.
+    """
     if not os.path.exists(".env"):
-        print("Erreur : Le fichier .env est introuvable !")
-        print("📌 Veuillez créer un .env en copiant .env.sample :")
-        print("   cp .env.sample .env")
+        print("Error: The .env file was not found!")
+        print("Please create a .env by copying .env.sample")
         sys.exit(1)
 
 
 def pull_docker_image():
-    """Récupère la dernière version de l'image depuis Docker Hub."""
-    print("📥 Récupération de l'image depuis Docker Hub...")
+    """
+        Fetch the latest version of the image from Docker Hub.
+    """
+    print("Fetching the image from Docker Hub...")
     subprocess.run(["docker", "pull", IMAGE_NAME], check=True)
 
 
 def run_docker_container():
-    """Lance le conteneur en utilisant .env et expose le port 8000."""
-    print("🚀 Lancement du conteneur...")
+    """
+        Run the container using .env and expose port 8000.
+    """
+    print("Launching the container...")
     subprocess.run(["docker", "run", "--env-file", ".env", "-p", "8000:8000", IMAGE_NAME],
                    check=True)
 
