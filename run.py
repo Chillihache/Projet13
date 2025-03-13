@@ -23,7 +23,8 @@ def pull_docker_image():
 def run_docker_container():
     """Lance le conteneur en utilisant .env et expose le port 8000."""
     print("🚀 Lancement du conteneur...")
-    subprocess.run(["docker", "run", "--env-file", ".env", "-p", "8000:8000", IMAGE_NAME], check=True)
+    subprocess.run(["docker", "run", "--env-file", ".env", "-p", "8000:8000", IMAGE_NAME],
+                   check=True)
 
 
 if __name__ == "__main__":
