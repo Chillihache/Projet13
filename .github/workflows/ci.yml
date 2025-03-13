@@ -55,8 +55,8 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     env:
-          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-          DNS_SENTRY: ${{ secrets.DNS_SENTRY }}
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DNS_SENTRY: ${{ secrets.DNS_SENTRY }}
 
     steps:
       - name: Checkout repo
@@ -75,9 +75,7 @@ jobs:
           --build-arg DNS_SENTRY="${{ secrets.DNS_SENTRY }}" \
           -t ${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings-site:${{ env.IMAGE_TAG }} .
 
-
       - name: Push Docker Image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings-site:${{ env.IMAGE_TAG }}
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings-site:${{ env.IMAGE_TAG }} ${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings-site:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings-site:latest
+  
