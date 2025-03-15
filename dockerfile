@@ -12,7 +12,7 @@ RUN echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}" > .env && \
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN python manage.py collectstatic --noinput
+
 
 RUN rm .env
 
