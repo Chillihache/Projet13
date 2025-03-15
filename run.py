@@ -25,7 +25,12 @@ def pull_docker_image():
         Fetch the latest version of the image from Docker Hub.
     """
     print("Fetching the image from Docker Hub...")
-    subprocess.run(["docker", "pull", IMAGE_NAME], check=True)
+    try:
+        result = subprocess.run(["docker", "pull", IMAGE_NAME], check=True)
+        print(result.stdout)
+    except subprocess.CalledProcessError:
+        print("Error : Failed to fetch the Docker image !")
+        sys.exit(1)
 
 
 def run_docker_container():
