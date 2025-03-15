@@ -19,5 +19,5 @@ def test_admin_url():
     """
         Test that the admin URL resolves to the correct view
     """
-    url = "/inconsspicuous-admin/"
+    url = "/inconspicuous-admin/"
     assert resolve(url).func.__name__ == admin.site.index.__name__
