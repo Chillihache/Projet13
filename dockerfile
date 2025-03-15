@@ -7,14 +7,14 @@ WORKDIR /app
 
 COPY . .
 
-RUN echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}" > .env && \
-    echo "DNS_SENTRY=${DNS_SENTRY}" >> .env
+ENV DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+ENV DNS_SENTRY=${DNS_SENTRY}
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN python manage.py collectstatic --noinput
 
-
-RUN rm .env
+RUN unset DJANGO_SECRET_KEY DNS_SENTRY
 
 ENV DATABASE_URL=sqlite:///oc-lettings-site.sqlite3
 
