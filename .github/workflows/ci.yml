@@ -87,22 +87,34 @@ jobs:
     env:
       RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DNS_SENTRY: ${{ secrets.DNS_SENTRY }}
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set IMAGE_TAG
-        run: echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
-
-      - name: Deploy to Render
+      - name: Create Render Docker Service
         run: |
-          curl -X PATCH https://api.render.com/v1/services/YOUR_SERVICE_ID \
-          -H "Authorization: Bearer $RENDER_API_KEY" \
-          -H "Content-Type: application/json" \
-          -d '{
-            "env": {
-              "DOCKER_IMAGE": "'$DOCKERHUB_USERNAME/oc-lettings-site:latest'"
-            }
-          }'
-  
+          curl -X POST https://api.render.com/v1/services \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "name": "my-service",
+              "serviceType": "web",
+              "env": "docker",
+              "docker": {
+                "image": "'$DOCKERHUB_USERNAME/oc-lettings-site:latest'"
+              },
+              "envVars": [
+                {
+                  "key": "DJANGO_SECRET_KEY",
+                  "value": "'$DJANGO_SECRET_KEY'"
+                },
+                {
+                  "key": "DNS_SENTRY",
+                  "value": "'$DNS_SENTRY'"
+                }
+              ],
+              "region": "eu"
+            }'
