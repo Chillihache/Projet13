@@ -116,8 +116,10 @@ jobs:
                   "plan": "starter" # ou un autre plan si nécessaire
                 }')
 
-          # Extraire le service_id de la réponse
-          echo $RESPONSE
+          # Vérifier la réponse
+          echo "Response: $RESPONSE"
+
+          # Extraire le service_id de la réponse JSON
           SERVICE_ID=$(echo $RESPONSE | jq -r '.id')
 
           if [ "$SERVICE_ID" != "null" ]; then
