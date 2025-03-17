@@ -91,6 +91,7 @@ jobs:
       RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
       DNS_SENTRY: ${{ secrets.DNS_SENTRY }}
+      RENDER_OWNER_ID : ${{ secrets.RENDER_OWNER_ID }}
 
     steps:
       - name: Checkout repo
@@ -103,6 +104,7 @@ jobs:
             -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
             --data '{
+                  "ownerID": "$RENDER_OWNER_ID",
                   "serviceName": "oc-lettings-site",
                   "env": "docker",
                   "docker": {
@@ -111,13 +113,13 @@ jobs:
                   "region": "us",
                   "plan": "starter"
                 }')
-
+  
           # Afficher la réponse brute pour le débogage
           echo "Response: $RESPONSE"
-
+  
           # Extraire le service_id de la réponse JSON
           SERVICE_ID=$(echo $RESPONSE | jq -r '.id')
-
+  
           if [ "$SERVICE_ID" != "null" ]; then
             echo "Service created with ID: $SERVICE_ID"
             echo "RENDER_SERVICE_ID=$SERVICE_ID" >> $GITHUB_ENV
