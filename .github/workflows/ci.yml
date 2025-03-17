@@ -79,27 +79,26 @@ jobs:
           docker push "$DOCKERHUB_USERNAME/oc-lettings-site:${{ env.IMAGE_TAG }}"
           docker push "$DOCKERHUB_USERNAME/oc-lettings-site:latest"
 
-  test-render:
+  deploy:
+    name: Deploy to Render
+    if: github.ref == 'refs/heads/master'
+    needs: containerize
     runs-on: ubuntu-latest
     env:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
       RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
 
     steps:
-      - name: Check Render Authentication
-        run: |
-          echo "Testing API connection..."
-          curl -s -H "Authorization: Bearer $RENDER_API_KEY" https://api.render.com/v1/services | jq .
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - name: Test API Render (avec ownerID)
+      - name: Render Deploy API Call
         run: |
-          curl -X POST "https://api.render.com/v1/services" \
-            -H "Authorization: Bearer $RENDER_API_KEY" \
-            -H "Content-Type: application/json" \
-            --data '{
-              "ownerId": "tea-cvbd3ul2ng1s73ecalqg",
-              "name": "test-service",
-              "type": "web_service",
-              "env": "docker",
-              "repo": "https://github.com/render-examples/docker-fastapi"
-            }'
-      
+          curl -X POST "https://api.render.com/v1/services/{SERVICE_ID}/deploys" \
+          -H "Authorization: Bearer $RENDER_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{
+                "branch": "master",
+                "dockerImage": "'$DOCKERHUB_USERNAME/oc-lettings-site:latest'"
+              }'
