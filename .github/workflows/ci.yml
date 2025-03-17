@@ -106,10 +106,11 @@ jobs:
             --data '{
               "ownerID": "'"$RENDER_OWNER_ID"'",
               "serviceName": "oc-lettings-site",
-              "env": "docker",
+              "runtime": "image",  # Remplacement de "env": "docker"
               "region": "eu",
               "plan": "starter",
               "type": "web_service",
+              "image": "'"$DOCKERHUB_USERNAME/oc-lettings-site:latest"'",  # Ajout ici
               "serviceDetails": {
                 "envVars": [
                   {"key": "DJANGO_SECRET_KEY", "value": "'"$DJANGO_SECRET_KEY"'"},
@@ -119,10 +120,10 @@ jobs:
                   "name": "data",
                   "mountPath": "/var/lib/sqlite",
                   "sizeGB": 1
-                },
-                "image": "'"$DOCKERHUB_USERNAME/oc-lettings-site:latest"'"
+                }
               }
             }'
+
           )
 
           # Afficher la réponse brute pour le débogage
