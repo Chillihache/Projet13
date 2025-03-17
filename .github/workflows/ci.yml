@@ -106,23 +106,24 @@ jobs:
             --data '{
               "ownerID": "'"$RENDER_OWNER_ID"'",
               "serviceName": "oc-lettings-site",
-              "env": "docker",
-              "region": "us",
+              "env": "image",
+              "region": "eu",
               "plan": "starter",
               "type": "web_service",
               "serviceDetails": {
                 "envVars": [
                   {"key": "DJANGO_SECRET_KEY", "value": "'"$DJANGO_SECRET_KEY"'"},
-                  {"key": "DNS_SENTRY", "value": "'"$DNS_SENTRY"'"}
+                  {"key": "DNS_SENTRY", "value": "'"$DNS_SENTRY"'"},
                 ],
                 "disk": {
                   "name": "data",
                   "mountPath": "/var/lib/sqlite",
                   "sizeGB": 1
-                }
+                },
               },
-              "image": "'"$DOCKERHUB_USERNAME/oc-lettings-site:latest"'"
-            }')
+              "image": "'"$DOCKERHUB_USERNAME/oc-lettings-site:latest"'",
+            }'
+          )
   
           # Afficher la réponse brute pour le débogage
           echo "Response: $RESPONSE"
