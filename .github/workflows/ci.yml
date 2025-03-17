@@ -106,7 +106,7 @@ jobs:
             --data '{
               "ownerID": "'"$RENDER_OWNER_ID"'",
               "serviceName": "oc-lettings-site",
-              "runtime": "image",
+              "runtime": "docker",
               "region": "eu",
               "plan": "starter",
               "type": "web_service",
@@ -115,7 +115,7 @@ jobs:
                 "envVars": [
                   {"key": "DJANGO_SECRET_KEY", "value": "'"$DJANGO_SECRET_KEY"'"},
                   {"key": "DNS_SENTRY", "value": "'"$DNS_SENTRY"'"}
-                ]  
+                ]
               }
             }'
           )
