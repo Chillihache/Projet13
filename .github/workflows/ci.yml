@@ -90,12 +90,12 @@ jobs:
           echo "Testing API connection..."
           curl -s -H "Authorization: Bearer $RENDER_API_KEY" https://api.render.com/v1/services | jq .
 
-      - name: Create Test Service on Render
+      - name: Create Test Service on Render (Verbose)
         run: |
-          curl -X POST "https://api.render.com/v1/services" \
+          curl -v -X POST "https://api.render.com/v1/services" \
             -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
-            -d '{
+            --data-raw '{
               "name": "test-service",
               "type": "web",
               "env": "docker",
@@ -105,3 +105,4 @@ jobs:
               "branch": "main",
               "autoDeploy": false
             }'
+      
