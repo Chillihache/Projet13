@@ -104,7 +104,7 @@ jobs:
             -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
             --data '{
-                  "ownerID": "$RENDER_OWNER_ID",
+                  "ownerID": "'"$RENDER_OWNER_ID"'",
                   "serviceName": "oc-lettings-site",
                   "env": "docker",
                   "docker": {
