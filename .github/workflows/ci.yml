@@ -98,7 +98,7 @@ jobs:
             --data '{
               "ownerId": "tea-cvbd3ul2ng1s73ecalqg",
               "name": "test-service",
-              "type": "web",
+              "type": "web_service",
               "env": "docker",
               "repo": "https://github.com/render-examples/docker-fastapi"
             }'
