@@ -90,19 +90,15 @@ jobs:
           echo "Testing API connection..."
           curl -s -H "Authorization: Bearer $RENDER_API_KEY" https://api.render.com/v1/services | jq .
 
-      - name: Create Test Service on Render (Verbose)
+      - name: Test API Render (Simple)
         run: |
-          curl -v -X POST "https://api.render.com/v1/services" \
+          curl -X POST "https://api.render.com/v1/services" \
             -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
-            --data-raw '{
+            --data '{
               "name": "test-service",
               "type": "web",
               "env": "docker",
-              "repo": "https://github.com/render-examples/docker-fastapi",
-              "region": "oregon",
-              "plan": "free",
-              "branch": "main",
-              "autoDeploy": false
+              "repo": "https://github.com/render-examples/docker-fastapi"
             }'
       
