@@ -96,7 +96,7 @@ jobs:
             -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
             --data '{
-              "ownerId": "cvbd3ul2ng1s73ecals0",
+              "ownerId": "tea-cvbd3ul2ng1s73ecalqg",
               "name": "test-service",
               "type": "web",
               "env": "docker",
