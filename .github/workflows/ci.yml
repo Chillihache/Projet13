@@ -90,12 +90,13 @@ jobs:
           echo "Testing API connection..."
           curl -s -H "Authorization: Bearer $RENDER_API_KEY" https://api.render.com/v1/services | jq .
 
-      - name: Test API Render (Simple)
+      - name: Test API Render (avec ownerID)
         run: |
           curl -X POST "https://api.render.com/v1/services" \
             -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
             --data '{
+              "ownerId": "cvbd3ul2ng1s73ecals0",
               "name": "test-service",
               "type": "web",
               "env": "docker",
