@@ -89,6 +89,8 @@ jobs:
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
       RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
       RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DNS_SENTRY: ${{ secrets.DNS_SENTRY }}
 
     steps:
       - name: Checkout repo
@@ -104,7 +106,7 @@ jobs:
                   "serviceName": "oc-lettings-site",
                   "env": "docker",
                   "docker": {
-                    "image": "'$DOCKERHUB_USERNAME/oc-lettings-site:latest'",
+                    "image": "'"$DOCKERHUB_USERNAME/oc-lettings-site:latest"'",
                     "envVars": [
                       {"key": "DJANGO_SECRET_KEY", "value": "'"$DJANGO_SECRET_KEY"'"},
                       {"key": "DNS_SENTRY", "value": "'"$DNS_SENTRY"'"}
@@ -113,11 +115,11 @@ jobs:
                   "region": "us", # ou la région que tu choisis
                   "plan": "starter" # ou un autre plan si nécessaire
                 }')
-          
+
           # Extraire le service_id de la réponse
           echo $RESPONSE
           SERVICE_ID=$(echo $RESPONSE | jq -r '.id')
-          
+
           if [ "$SERVICE_ID" != "null" ]; then
             echo "Service created with ID: $SERVICE_ID"
             echo "RENDER_SERVICE_ID=$SERVICE_ID" >> $GITHUB_ENV
@@ -134,5 +136,6 @@ jobs:
             -H "Content-Type: application/json" \
             --data '{
                   "branch": "master",
-                  "dockerImage": "'$DOCKERHUB_USERNAME/oc-lettings-site:latest'"
+                  "dockerImage": "'"$DOCKERHUB_USERNAME/oc-lettings-site:latest"'"
                 }'
+  
