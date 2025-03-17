@@ -79,42 +79,29 @@ jobs:
           docker push "$DOCKERHUB_USERNAME/oc-lettings-site:${{ env.IMAGE_TAG }}"
           docker push "$DOCKERHUB_USERNAME/oc-lettings-site:latest"
 
-  deploy:
-    name: Deploy to Render
-    if: github.ref == 'refs/heads/master'
-    needs: containerize
+  test-render:
     runs-on: ubuntu-latest
     env:
       RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-      DNS_SENTRY: ${{ secrets.DNS_SENTRY }}
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Create Render Docker Service
+      - name: Check Render Authentication
         run: |
-          curl -X POST https://api.render.com/v1/services \
+          echo "Testing API connection..."
+          curl -s -H "Authorization: Bearer $RENDER_API_KEY" https://api.render.com/v1/services | jq .
+
+      - name: Create Test Service on Render
+        run: |
+          curl -X POST "https://api.render.com/v1/services" \
             -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
-              "name": "my-service",
-              "serviceType": "web",
+              "name": "test-service",
+              "type": "web",
               "env": "docker",
-              "docker": {
-                "image": "'$DOCKERHUB_USERNAME/oc-lettings-site:latest'"
-              },
-              "envVars": [
-                {
-                  "key": "DJANGO_SECRET_KEY",
-                  "value": "'$DJANGO_SECRET_KEY'"
-                },
-                {
-                  "key": "DNS_SENTRY",
-                  "value": "'$DNS_SENTRY'"
-                }
-              ],
-              "region": "eu"
+              "repo": "https://github.com/render-examples/docker-fastapi",
+              "region": "oregon",
+              "plan": "free",
+              "branch": "main",
+              "autoDeploy": false
             }'
