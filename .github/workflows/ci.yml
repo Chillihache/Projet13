@@ -106,7 +106,7 @@ jobs:
             --data '{
               "ownerID": "'"$RENDER_OWNER_ID"'",
               "serviceName": "oc-lettings-site",
-              "env": "image",
+              "env": "docker",
               "region": "eu",
               "plan": "starter",
               "type": "web_service",
@@ -149,4 +149,3 @@ jobs:
                   "branch": "master",
                   "dockerImage": "'"$DOCKERHUB_USERNAME/oc-lettings-site:latest"'"
                 }'
-  
