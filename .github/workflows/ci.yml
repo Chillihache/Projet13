@@ -80,7 +80,7 @@ jobs:
           docker push "$DOCKERHUB_USERNAME/oc-lettings-site:latest"
 
   deploy:
-    name: Deploy to Render
+    name: Create and Deploy to Render
     if: github.ref == 'refs/heads/master'
     needs: containerize
     runs-on: ubuntu-latest
@@ -88,17 +88,51 @@ jobs:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
       RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+      RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Render Deploy API Call
+      - name: Create Render Service (first-time)
         run: |
-          curl -X POST "https://api.render.com/v1/services/{SERVICE_ID}/deploys" \
-          -H "Authorization: Bearer $RENDER_API_KEY" \
-          -H "Content-Type: application/json" \
-          -d '{
-                "branch": "master",
-                "dockerImage": "'$DOCKERHUB_USERNAME/oc-lettings-site:latest'"
-              }'
+          # Create Render service via API
+          RESPONSE=$(curl -X POST "https://api.render.com/v1/services" \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+                  "serviceName": "oc-lettings-site",
+                  "env": "docker",
+                  "docker": {
+                    "image": "'$DOCKERHUB_USERNAME/oc-lettings-site:latest'",
+                    "envVars": [
+                      {"key": "DJANGO_SECRET_KEY", "value": "'"$DJANGO_SECRET_KEY"'"},
+                      {"key": "DNS_SENTRY", "value": "'"$DNS_SENTRY"'"}
+                    ]
+                  },
+                  "region": "us", # ou la région que tu choisis
+                  "plan": "starter" # ou un autre plan si nécessaire
+                }')
+          
+          # Extraire le service_id de la réponse
+          echo $RESPONSE
+          SERVICE_ID=$(echo $RESPONSE | jq -r '.id')
+          
+          if [ "$SERVICE_ID" != "null" ]; then
+            echo "Service created with ID: $SERVICE_ID"
+            echo "RENDER_SERVICE_ID=$SERVICE_ID" >> $GITHUB_ENV
+          else
+            echo "Error creating service"
+            exit 1
+          fi
+
+      - name: Trigger Deploy on Render
+        run: |
+          # Déployer le service via l'API Render
+          curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+                  "branch": "master",
+                  "dockerImage": "'$DOCKERHUB_USERNAME/oc-lettings-site:latest'"
+                }'
