@@ -21,6 +21,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']  # Add your domain in production
 
+CSRF_TRUSTED_ORIGINS = ["https://*.onrender.com/"]
+
 
 # Application definition
 
