@@ -162,6 +162,7 @@ jobs:
                     "imagePath": "'"docker.io/$DOCKERHUB_USERNAME/oc-lettings-site:latest"'"
                 }
             }')
+            DEPLOY_RESPONSE=$(curl -X POST "https://api.render.com/v1/services/$SERVICE_ID/deploys" \
+              -H "Authorization: Bearer $RENDER_API_KEY")
             echo "Response: $RESPONSE"
           fi
-  
