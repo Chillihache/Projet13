@@ -101,7 +101,7 @@ jobs:
         run: |
           RESPONSE=$(curl -s -X GET "https://api.render.com/v1/services" \
             -H "Authorization: Bearer $RENDER_API_KEY")
-          SERVICE_EXISTS=$(echo "$RESPONSE" | jq -e '.[] | select(.name == "oc-lettings-site")' > /dev/null && echo "true" || echo "false")
+          SERVICE_EXISTS=$(echo "$RESPONSE" | jq -e '.[] | select(.service.name == "oc-lettings-site")' > /dev/null && echo "true" || echo "false")
           echo "SERVICE_EXISTS=$SERVICE_EXISTS" >> $GITHUB_ENV
           echo "Service oc-lettings-site existe ? : $SERVICE_EXISTS"
 
