@@ -106,7 +106,7 @@ jobs:
             --data '{
               "type": "web_service",
               "name": "oc-lettings-site",
-              "ownerId": "$RENDER_OWNER_ID",
+              "ownerId": "'"$RENDER_OWNER_ID"'",
               "autoDeploy": "yes",
               "image": {
                   "imagePath": "'"docker.io/$DOCKERHUB_USERNAME/oc-lettings-site:latest"'"
