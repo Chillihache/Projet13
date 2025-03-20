@@ -148,4 +148,7 @@ jobs:
   
             # Afficher la réponse brute pour le débogage
             echo "Response: $RESPONSE"
+          else
+            echo "Service existe deja"
+          fi
   
