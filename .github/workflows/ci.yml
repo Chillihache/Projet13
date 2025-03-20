@@ -104,19 +104,37 @@ jobs:
             -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
             --data '{
-              "ownerID": "'"$RENDER_OWNER_ID"'",
-              "serviceName": "oc-lettings-site",
-              "runtime": "docker",
-              "region": "eu",
-              "plan": "starter",
               "type": "web_service",
-              "image": "'"$DOCKERHUB_USERNAME/oc-lettings-site:latest"'",
+              "name": "oc-lettings-site",
+              "ownerId": "$RENDER_OWNER_ID",
+              "autoDeploy": "yes",
+              "image": {
+                  "imagePath": "'"docker.io/$DOCKERHUB_USERNAME/oc-lettings-site:latest"'"
+              },
               "serviceDetails": {
-                "envVars": [
-                  {"key": "DJANGO_SECRET_KEY", "value": "'"$DJANGO_SECRET_KEY"'"},
-                  {"key": "DNS_SENTRY", "value": "'"$DNS_SENTRY"'"}
-                ]
-              }
+                  "pullRequestPreviewsEnabled": "no",
+                  "previews": {
+                      "generation": "off"
+                  
+                  },
+                  "runtime": "image",
+                  "region": "frankfurt"
+              },
+              "envVars": [
+                  {
+                      "key": "DJANGO_SECRET_KEY",
+                      "value": "'"$DJANGO_SECRET_KEY"'"
+                  },
+                  {
+                      "key": "DNS_SENTRY",
+                      "value": "'"$DNS_SENTRY"'"
+                  },
+                  {
+                      "key": "DATABASE_URL",
+                      "value": "sqlite:///db.sqlite3"
+                  }
+              ]
+          }
             }'
           )
 
@@ -134,13 +152,3 @@ jobs:
             exit 1
           fi
 
-      - name: Trigger Deploy on Render
-        run: |
-          # Déployer le service via l'API Render
-          curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
-            -H "Authorization: Bearer $RENDER_API_KEY" \
-            -H "Content-Type: application/json" \
-            --data '{
-                  "branch": "master",
-                  "dockerImage": "'"$DOCKERHUB_USERNAME/oc-lettings-site:latest"'"
-                }'
