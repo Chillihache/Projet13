@@ -144,5 +144,6 @@ sentry_sdk.init(
             level=logging.INFO,
             event_level=logging.INFO
         ),
-    ]
+    ],
+    environment=os.getenv("DJANGO_ENV", "production")
 )
