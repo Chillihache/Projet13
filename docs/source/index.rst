@@ -18,6 +18,7 @@ Bienvenue dans la documentation du projet 13 **oc-lettings-site**.
    modules/guide-demarrage-rapide.rst
    modules/installation-complete.rst
    modules/base-de-donnees.rst
+   modules/deploiement.rst
 
 .. include:: modules/description.rst
 
