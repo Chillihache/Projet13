@@ -40,6 +40,7 @@ Dans le reste de la documentation sur le développement local, il est supposé q
 - `pip install --requirement requirements.txt`
 - Créer un nouveau projet Django avec Sentry
 - Créer un copie du fichier ".env.sample", la renommer ".env" et remplir les champs "DJANGO_SECRET_KEY" et "DNS_SENTRY"
+- `python manage.py collectstatic`
 - `python manage.py runserver`
 - Aller sur `http://localhost:8000` dans un navigateur.
 
