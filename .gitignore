@@ -8,3 +8,4 @@ env
 staticfiles/
 env-docs
 venv-docs
+docs/build/
