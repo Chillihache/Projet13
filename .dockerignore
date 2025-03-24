@@ -1,0 +1,4 @@
+docs/
+.env.sample
+__pycache__/
+*.pyc

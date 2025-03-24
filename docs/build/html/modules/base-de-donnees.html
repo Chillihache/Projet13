@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html lang="fr" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Structure et modèles de la base de données &#8212; Documentation oc-lettings-site 0.1</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=af8511e3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=e6b791cb"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Procédures de deploiement et gestion de l’application" href="deploiement.html" />
+    <link rel="prev" title="Installation complète" href="installation-complete.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="structure-et-modeles-de-la-base-de-donnees">
+<h1>Structure et modèles de la base de données<a class="headerlink" href="#structure-et-modeles-de-la-base-de-donnees" title="Lien vers cette rubrique">¶</a></h1>
+<p>Ce projet utilise SQLite3 comme système de gestion de base de données</p>
+<section id="tables-principales-de-la-base-de-donnees">
+<h2>Tables principales de la base de données<a class="headerlink" href="#tables-principales-de-la-base-de-donnees" title="Lien vers cette rubrique">¶</a></h2>
+<ul class="simple">
+<li><p><strong>auth_user</strong> : Stocke les informations des utilisateurs.</p></li>
+<li><p><strong>profiles_profile</strong> : Associe des informations supplémentaires aux utilisateurs.</p></li>
+<li><p><strong>lettings_adress</strong> : Contient les informations relative à l’adresse des locations</p></li>
+<li><p><strong>lettings_letting</strong> : Contient les informations des locations</p></li>
+</ul>
+</section>
+<section id="modele-user">
+<h2>Modèle User :<a class="headerlink" href="#modele-user" title="Lien vers cette rubrique">¶</a></h2>
+<ul class="simple">
+<li><p><strong>id :</strong> int</p></li>
+<li><p><strong>password :</strong> varchar</p></li>
+<li><p><strong>last_login :</strong> datetime</p></li>
+<li><p><strong>is_superuser :</strong> bool</p></li>
+<li><p><strong>username :</strong> varchar</p></li>
+<li><p><strong>last_name :</strong> varchar</p></li>
+<li><p><strong>email :</strong> varchar</p></li>
+<li><p><strong>is_staff :</strong> bool</p></li>
+<li><p><strong>is_active :</strong> bool</p></li>
+<li><p><strong>date joined :</strong> datetime</p></li>
+<li><p><strong>first_name :</strong> varchar</p></li>
+</ul>
+</section>
+<section id="modele-profile">
+<h2>Modèle Profile :<a class="headerlink" href="#modele-profile" title="Lien vers cette rubrique">¶</a></h2>
+<ul class="simple">
+<li><p><strong>id :</strong> int</p></li>
+<li><p><strong>user_id :</strong> int (Clé étrangère vers le modèle User)</p></li>
+<li><p><strong>favorite_city :</strong> varchar</p></li>
+</ul>
+</section>
+<section id="modele-address">
+<h2>Modèle Address :<a class="headerlink" href="#modele-address" title="Lien vers cette rubrique">¶</a></h2>
+<ul class="simple">
+<li><p><strong>id :</strong> int</p></li>
+<li><p><strong>number :</strong> int</p></li>
+<li><p><strong>street :</strong> varchar</p></li>
+<li><p><strong>city :</strong> varchar</p></li>
+<li><p><strong>state :</strong> varchar</p></li>
+<li><p><strong>zip_code :</strong> int</p></li>
+<li><p><strong>country_iso_code :</strong> varchar</p></li>
+</ul>
+</section>
+<section id="modele-letting">
+<h2>Modèle Letting :<a class="headerlink" href="#modele-letting" title="Lien vers cette rubrique">¶</a></h2>
+<ul class="simple">
+<li><p><strong>id :</strong> int</p></li>
+<li><p><strong>title :</strong> varchar</p></li>
+<li><p><strong>address_id :</strong> int (Clé étrangère vers le modèle Address)</p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">oc-lettings-site</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Sommaire:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="guide-demarrage-rapide.html">Guide de démarrage rapide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation-complete.html">Installation complète</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Structure et modèles de la base de données</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploiement.html">Procédures de deploiement et gestion de l’application</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="installation-complete.html" title="Chapitre précédent">Installation complète</a></li>
+      <li>Next: <a href="deploiement.html" title="Chapitre suivant">Procédures de deploiement et gestion de l’application</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Chillihache.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/modules/base-de-donnees.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html lang="fr" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Procédures de deploiement et gestion de l’application &#8212; Documentation oc-lettings-site 0.1</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=af8511e3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=e6b791cb"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="prev" title="Structure et modèles de la base de données" href="base-de-donnees.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="procedures-de-deploiement-et-gestion-de-l-application">
+<h1>Procédures de deploiement et gestion de l’application<a class="headerlink" href="#procedures-de-deploiement-et-gestion-de-l-application" title="Lien vers cette rubrique">¶</a></h1>
+<p>Dans cette page, je vous expliquerai comment est composée la pipeline CI/CL et comment l’utiliser avec Github Actions</p>
+<section id="description-de-la-pipeline-github-actions">
+<h2>Description de la pipeline GitHub actions<a class="headerlink" href="#description-de-la-pipeline-github-actions" title="Lien vers cette rubrique">¶</a></h2>
+<p>La pipeline CI/CL se déclanche à chque push ou pull request et comprend 3 parties :</p>
+<ul class="simple">
+<li><p>Lancement des tests, vérification de la couverture (plus de 80%) et vérification du linting. (Sur toutes les branches)</p></li>
+<li><p>Conteneurisation avec Docker et envoie de l’image sur Docker Hub (Uniquement sur la branche « master »)</p></li>
+<li><p>Déploiement de l’image en ligne via l’API de Render (Uniquement sur la branche « master »)</p></li>
+</ul>
+<p>Chaque étape de la pipeline ne se déclanche que si l’étape précédente est un succès</p>
+</section>
+<section id="configuration-de-la-pipeline">
+<h2>Configuration de la pipeline<a class="headerlink" href="#configuration-de-la-pipeline" title="Lien vers cette rubrique">¶</a></h2>
+<section id="prerequis">
+<h3>Prérequis<a class="headerlink" href="#prerequis" title="Lien vers cette rubrique">¶</a></h3>
+<ul class="simple">
+<li><p>Un compte Github</p></li>
+<li><p>Un compte render avec, au minimum, le plan professionel (Pour utilisation de l’API)</p></li>
+<li><p>Un compte Docker Hub</p></li>
+<li><p>Docker Desktop installé sur sa machine</p></li>
+</ul>
+</section>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Lien vers cette rubrique">¶</a></h3>
+<ul class="simple">
+<li><p>Pour avoir accès à la pipeline, forkez le projet sur votre compte Github</p></li>
+<li><p>Dans votre projet, sur Github, accédez à settings &gt; Secrets and Variables &gt; actions</p></li>
+<li><p>Ici, créez les repository secrets suivants : DJANGO_SECRET_KEY, DNS_SENTRY, DOCKERHUB_TOKEN, DOCKERHUB_USERNAME, RENDER_API_KEY, RENDER_OWNER_ID</p></li>
+<li><p>La pipeline est maintenant fonctionnelle et se déclenchera a chaque push ou pull requests.</p></li>
+</ul>
+</section>
+<section id="recuperer-et-lancer-l-image-docker-hub">
+<h3>Récupérer et lancer l’image Docker Hub<a class="headerlink" href="#recuperer-et-lancer-l-image-docker-hub" title="Lien vers cette rubrique">¶</a></h3>
+<p>Vous avez la possibilité de récupérer l’image stockée sur Docker Hub.</p>
+<ul class="simple">
+<li><p>Ouvrez Docker Desktop</p></li>
+<li><p>Allez dans votre repository local :</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>/path/to/Projet13
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Remplissez le champ IMAGE_NAME dans votre .env (voir guide de démarrage rapide)</p></li>
+<li><p>Le nom de l’image devrait être votre_username_docker_hub/oc-lettings-site:latest</p></li>
+<li><p>Activez votre environment virtuel :</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>venv/bin/activate
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Puis lancer la commande suivante :</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>run.py
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Allez sur <a class="reference external" href="http://localhost:8000">http://localhost:8000</a> dans votre navigateur</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">oc-lettings-site</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Sommaire:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="guide-demarrage-rapide.html">Guide de démarrage rapide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation-complete.html">Installation complète</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base-de-donnees.html">Structure et modèles de la base de données</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Procédures de deploiement et gestion de l’application</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="base-de-donnees.html" title="Chapitre précédent">Structure et modèles de la base de données</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Chillihache.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/modules/deploiement.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

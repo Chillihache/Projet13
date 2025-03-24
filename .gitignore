@@ -5,3 +5,6 @@ env
 .env
 .idea
 .coverage
+staticfiles/
+env-docs
+venv-docs
